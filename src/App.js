@@ -10,7 +10,7 @@ class App extends Component {
   
   handleChange = (event) => {
        //Converting input sting to a number array
-       let layout = event.target.value.split(",");
+       let layout = event.target.value.split("/");
        layout.forEach(element => {parseInt(element)})
 
        //Immutable copies of the state
