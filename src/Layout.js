@@ -9,21 +9,24 @@ class Layout extends Component {
         margin: 50px auto  auto 700px;
         display: grid;
         grid-template-rows: repeat(${this.props.rows}, auto);`
+
         let GridItem = Styled.div`
         background-color: #cfe2f3;
         border: 2px solid #000;`
-        let gridInventory = null;
-        let gridItems = new Array(this.props.rows).fill([]);
+
+        let gridInventory = new Array(this.props.rows);
+
         for (var i = 0; i < this.props.rows; i++) {
+            let gridItems = new Array(this.props.rowDetails[i].columns).fill(null);
             let GridColumnContainer = Styled.div`
             display: grid;
             grid-template-columns: repeat(${this.props.rowDetails[i].columns}, auto);`
             
             for (var j = 0; j < this.props.rowDetails[i].columns; j++) {
-                gridItems[i].push(<GridItem></GridItem>);
+                gridItems.push(<GridItem></GridItem>);
             }
 
-            gridInventory = <GridColumnContainer>{gridItems[i]}</GridColumnContainer>
+            gridInventory[i] = <GridColumnContainer>{gridItems}</GridColumnContainer>
         }
         return(
             <GridContainer>

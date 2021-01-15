@@ -5,28 +5,40 @@ import './App.css';
 class App extends Component {
   state = {
     rows: 0,
-    rowDetails:[]
+    rowDetails:[],
+    typingTimeout: 2500
   }
   
   handleChange = (event) => {
-       //Converting input sting to a number array
-       let layout = event.target.value.split("/");
-       layout.forEach(element => {parseInt(element)})
+      //Resetting the timer after each input
+      if(this.state.typingTimeout) {
+        clearTimeout(this.state.typingTimeout);
+      }
+      let input = event.target.value;
+      this.setState({typingTimeout: setTimeout(() => this.parseInput(input), 750)});
+    }
 
-       //Immutable copies of the state
-       let newState = {...this.state};
-       newState.rows = layout.length;
-
-       let details = [...newState.rowDetails];
-
-       //Updating the state
-       for (var i = 0; i < newState.rows; i++) {
-         details.push({columns: layout[i]})
-       }
-       this.setState({rows: newState.rows,
-                      rowDetails: details})
-     }
-    
+    parseInput = (input) => {
+          if (input.length !== 0) {
+            //Converting input sting to a number array 
+            let layout = input.split(" / ");
+            layout.forEach(element => {parseInt(element)})
+            
+            //Immutable copies of the state
+            let newState = {...this.state};
+            newState.rows = layout.length;
+            
+            let details = [...newState.rowDetails];
+            
+            //Updating the state
+            for (var i = 0; i < newState.rows; i++) {
+              details[i] = {columns: layout[i]}
+            }
+            this.setState({rows: newState.rows,
+                           rowDetails: details})
+          }
+    }
+   
   render() {
     let layoutFlag = true;
     let generateLayout = null;
